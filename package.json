@@ -1,5 +1,5 @@
 {
-  "name": "theLaurelsStore",
+  "name": "the-laurels-store",
   "main": "server.js",
   "type": "module",
   "scripts": {

@@ -3,8 +3,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node Backend/server",
-    "server": "nodemon Backend/server",
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
@@ -19,7 +19,8 @@
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.8.1"
+    "mongoose": "^6.8.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "concurrently": "^7.6.0",

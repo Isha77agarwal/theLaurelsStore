@@ -39,3 +39,18 @@ export const createNewUser = async (userData) => {
     throw new Error("Invalid user");
   }
 };
+
+export const loginUser = async (userData) => {
+  const user = await User.find({
+    $or: [{ email: userData.email }, { phoneNumber: userData.phoneNumber }],
+  });
+
+  if (user && (await user.matchPassword(password))) {
+    return {
+      ...user,
+      token: generateToken(user._id),
+    };
+  } else {
+    throw new Error("Invalid email or password");
+  }
+};

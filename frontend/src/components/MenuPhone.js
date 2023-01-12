@@ -1,8 +1,14 @@
 import React from 'react'
+import { Box, CssBaseline, AppBar } from '@mui/material';
 
 const MenuPhone = () => {
     return (
-        <div>MenuPhone</div>
+        <Box>
+            <CssBaseline />
+            <AppBar position="fixed">
+
+            </AppBar>
+        </Box>
     )
 }
 

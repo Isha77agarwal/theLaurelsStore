@@ -7,6 +7,7 @@ import logo from '../assets/logo.ico'
 import { Link } from 'react-router-dom'
 import { categories } from '../data/data.js'
 import Subcategory from './Subcategory'
+import SearchBar from './SearchBar';
 
 const MenuD = () => {
     const [currentId, setCurrent] = useState("")
@@ -24,8 +25,19 @@ const MenuD = () => {
     };
 
     const open = Boolean(anchorEl);
+    const [openSearch, setOpenSearch] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpenSearch(true);
+    };
+
+    const handleClose1 = () => {
+        setOpenSearch(false);
+    };
+
     return (
         <Box>
+            {openSearch && <SearchBar open={openSearch} handleClose={handleClose1} />}
             <AppBar color="primary" elevation={0}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <IconButton edge="start" color="inherit" sx={{ mr: 5 }} size="large">
@@ -72,7 +84,7 @@ const MenuD = () => {
                                     bgcolor: 'primary.dark',
                                     color: 'white',
                                 },
-                            }}>
+                            }} onClick={handleClickOpen}>
                                 <SearchIcon />
                             </IconButton>
                         </Tooltip>

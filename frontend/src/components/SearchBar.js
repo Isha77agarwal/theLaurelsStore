@@ -13,11 +13,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const SearchBar = ({ open, handleClose }) => {
+const SearchBar = ({ open, handleClose, width }) => {
+    const wrapValue = width === 'xs' ? "wrap" : "noWrap";
+
     return (
         <div>
             <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}
-                keepMounted maxWidth='md' fullWidth={true} scroll="body"
+                keepMounted maxWidth={width} fullWidth={true} scroll="body"
                 PaperProps={{ sx: { verticalAlign: "top" } }}>
                 <DialogTitle sx={{ fontWeight: 600, color: '#333652', letterSpacing: '0.25rem', fontSize: 35 }}>
                     <Typewriter
@@ -28,7 +30,7 @@ const SearchBar = ({ open, handleClose }) => {
                         }}
                     />
                 </DialogTitle>
-                <DialogContent sx={{ display: 'flex' }}>
+                <DialogContent sx={{ display: 'flex', flexWrap: wrapValue, justifyContent: 'space-between' }}>
                     <TextField
                         focused
                         margin="dense"
@@ -38,10 +40,10 @@ const SearchBar = ({ open, handleClose }) => {
                         color="secondary" inputProps={{
                             sx: { height: 30, fontSize: 25 }
                         }}
-                        sx={{ marginRight: '15px' }}
+                        sx={{ marginRight: '15px', flex: 'auto' }}
                     />
                     <Button variant="outlined" color='secondary' sx={{
-                        borderRadius: 10, maxWidth: '15%', maxHeight: '30%', minWidth: '15%', minHeight: '30%', border: '3px solid', fontSize: '90%', fontWeight: 600, ':hover': {
+                        borderRadius: 10, width: '18%', height: '30%', border: '3px solid', fontSize: '90%', fontWeight: 600, marginRight: '15px', flex: 'auto', ':hover': {
                             backgroundColor: 'secondary.dark',
                             color: '#ffffff',
                             transition: '.5s ease'
@@ -49,7 +51,7 @@ const SearchBar = ({ open, handleClose }) => {
                     }}>GO</Button>
                 </DialogContent>
             </Dialog>
-        </div>
+        </div >
     )
 }
 

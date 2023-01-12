@@ -37,7 +37,7 @@ const MenuD = () => {
 
     return (
         <Box>
-            {openSearch && <SearchBar open={openSearch} handleClose={handleClose1} />}
+            {openSearch && <SearchBar open={openSearch} handleClose={handleClose1} width='md' />}
             <AppBar color="primary" elevation={0}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <IconButton edge="start" color="inherit" sx={{ mr: 5 }} size="large">

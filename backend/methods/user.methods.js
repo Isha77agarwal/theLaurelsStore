@@ -1,7 +1,6 @@
 import constants from "../configs/constants.js";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
-import generateToken from "../utils/generateToken.js";
 
 export const preparePayloadToCreateUser = async (userData) => {
   const salt = await bcrypt.genSalt(10);
@@ -32,31 +31,50 @@ export const createNewUser = async (userData) => {
     throw new Error("User already exists");
   }
 
-  const user = await User.create(userData);
+  const data = new User(userData);
+  const user = await data.save();
   if (user) {
-    return { ...user, token: generateToken(user.email) };
+    return user;
   } else {
     throw new Error("Invalid user");
   }
 };
 
+const matchPassword = async function (enteredPassword, userPassword) {
+  return await bcrypt.compare(enteredPassword, userPassword);
+};
+
 export const loginUser = async (userData) => {
-  const user = await User.find({
+  const user = await User.findOne({
     $or: [{ email: userData.email }, { phoneNumber: userData.phoneNumber }],
   });
 
-  if (user && (await user.matchPassword(password))) {
-    return {
-      ...user,
-      token: generateToken(user.email),
-    };
+  if (user && (await matchPassword(userData.password, user.password))) {
+    return user;
   } else {
     throw new Error("Invalid email or password");
   }
 };
 
+export const prepareFinalReposnseForLoggedInUser = (userData, token) => {
+  const finalUserData = {
+    name: userData.name,
+    email: userData.email,
+    phoneNumber: userData.phoneNumber,
+    address: userData.address,
+    shippingAddress: userData.shippingAddress,
+    userRoleSlug: userData.userRoleSlug,
+    token,
+  };
+
+  return finalUserData;
+};
+
 export const getUserData = async (query, limit = 10, skip = 0) => {
-  const usersInfo = await User.find(query).limit(limit).skip(skip);
+  const usersInfo = await User.find(query)
+    .select("-password")
+    .limit(limit)
+    .skip(skip);
   if (usersInfo && !usersInfo.length) {
     throw new Error("User Not found!");
   }

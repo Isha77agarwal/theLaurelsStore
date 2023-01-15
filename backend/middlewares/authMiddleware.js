@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import expressAsyncHandler from "express-async-handler";
 import User from "../model/userModel.js";
+import CONSTANTS from "../configs/constants.js";
 
 const protect = expressAsyncHandler(async (req, res, next) => {
   let token;
@@ -14,7 +15,9 @@ const protect = expressAsyncHandler(async (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = await User.findById(decoded.id).select("-password");
+      req.user = await User.findOne({ email: decoded.email }).select(
+        "-password"
+      );
 
       next();
     } catch (err) {
@@ -30,7 +33,7 @@ const protect = expressAsyncHandler(async (req, res, next) => {
 });
 
 const admin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+  if (req.user && req.user.userRoleSlug === CONSTANTS.userRoleSlugs.admin) {
     next();
   } else {
     res.status(401);

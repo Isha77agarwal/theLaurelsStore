@@ -9,7 +9,7 @@ export const preparePayloadToCreateUser = async (userData) => {
     name: userData.name,
     email: userData.email,
     phoneNumber: userData.phoneNumber,
-    userRoleSlug: constants.userRoleSlugs.buyebcrr,
+    userRoleSlug: constants.userRoleSlugs.buyer,
   };
   if (userData.address) {
     userPayload.address = userData.address;
@@ -34,7 +34,7 @@ export const createNewUser = async (userData) => {
 
   const user = await User.create(userData);
   if (user) {
-    return { ...user, token: generateToken(user._id) };
+    return { ...user, token: generateToken(user.email) };
   } else {
     throw new Error("Invalid user");
   }
@@ -48,9 +48,17 @@ export const loginUser = async (userData) => {
   if (user && (await user.matchPassword(password))) {
     return {
       ...user,
-      token: generateToken(user._id),
+      token: generateToken(user.email),
     };
   } else {
     throw new Error("Invalid email or password");
   }
+};
+
+export const getUserData = async (query, limit = 10, skip = 0) => {
+  const usersInfo = await User.find(query).limit(limit).skip(skip);
+  if (usersInfo && !usersInfo.length) {
+    throw new Error("User Not found!");
+  }
+  return usersInfo;
 };

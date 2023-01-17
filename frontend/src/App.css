@@ -17,3 +17,12 @@ li {
   transition: all 0.5s ease;
   font-weight: 600;
 }
+
+
+.search{
+  margin: 0 auto; 
+  letter-spacing: .15em; 
+  color: #333652;
+  font-weight: 600;
+}
+
